@@ -946,3 +946,4 @@ export function InfrastructureComparison({ className = '' }: InfrastructureCompa
       )}
     </div>
   );
+} 
