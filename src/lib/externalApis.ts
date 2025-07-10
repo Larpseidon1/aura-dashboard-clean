@@ -108,26 +108,44 @@ async function fetchAppProtocolRevenue(protocolName: string): Promise<number> {
         fetch(`https://api.llama.fi/summary/fees/pumpswap`).then(res => res.json())
       ]);
       
-      // Use 30d data if available, fallback to 7d×52, then 24h×365
+      // Calculate 30d totals from daily data array when summary total30d is null
       let pumpRevenue = 0;
       let pumpswapRevenue = 0;
       let methodology = '';
       
-      if (pumpData.total30d && pumpswapData.total30d) {
+      // Calculate 30d from daily data (more accurate)
+      if (pumpData.totalDataChart && pumpswapData.totalDataChart) {
+        const pump30d = pumpData.totalDataChart.slice(-30).reduce((sum: number, day: any) => sum + day[1], 0);
+        const pumpswap30d = pumpswapData.totalDataChart.slice(-30).reduce((sum: number, day: any) => sum + day[1], 0);
+        
+        pumpRevenue = pump30d * 12;
+        pumpswapRevenue = pumpswap30d * 12;
+        methodology = '30d calculated from daily data × 12';
+        
+        console.log(`✅ Pump.fun 30d calculated: $${pump30d.toLocaleString()} → $${pumpRevenue.toLocaleString()} annualized`);
+        console.log(`✅ PumpSwap 30d calculated: $${pumpswap30d.toLocaleString()} → $${pumpswapRevenue.toLocaleString()} annualized`);
+      }
+      // Fallback to summary totals if daily data not available
+      else if (pumpData.total30d && pumpswapData.total30d) {
         pumpRevenue = (pumpData.total30d || 0) * 12;
         pumpswapRevenue = (pumpswapData.total30d || 0) * 12;
-        methodology = '30d total × 12';
-      } else if (pumpData.total7d && pumpswapData.total7d) {
+        methodology = '30d summary × 12';
+      }
+      // Fallback to 7d data
+      else if (pumpData.total7d && pumpswapData.total7d) {
         pumpRevenue = (pumpData.total7d || 0) * 52;
         pumpswapRevenue = (pumpswapData.total7d || 0) * 52;
-        methodology = '7d total × 52';
-      } else if (pumpData.total24h && pumpswapData.total24h) {
+        methodology = '7d × 52';
+      }
+      // Final fallback to 24h data
+      else {
         pumpRevenue = (pumpData.total24h || 0) * 365;
         pumpswapRevenue = (pumpswapData.total24h || 0) * 365;
         methodology = '24h × 365';
       }
       
       const totalRevenue = pumpRevenue + pumpswapRevenue;
+      
       console.log(`✅ Pump.fun combined: $${totalRevenue.toLocaleString()} annual revenue (${methodology})`);
       console.log(`   - pump.fun: $${pumpRevenue.toLocaleString()}`);
       console.log(`   - pumpswap: $${pumpswapRevenue.toLocaleString()}`);

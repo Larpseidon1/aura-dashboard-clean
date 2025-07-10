@@ -38,7 +38,7 @@ const BASE_PROJECTS: CryptoProject[] = [
   { name: 'Moonshot', category: 'Application', amountRaised: 60_000_000, useDefillama: true },
   { name: 'Tether', category: 'Stablecoins', amountRaised: 69_420_000, useDefillama: true },
   { name: 'Circle', category: 'Stablecoins', amountRaised: 1_200_000_000, useDefillama: true },
-  { name: 'Pump.fun', category: 'Application', amountRaised: 70_000_000, useDefillama: true },
+  { name: 'Pump.fun', category: 'Application', amountRaised: 1_170_000, useDefillama: true, lastFundingRoundValuation: 12_000_000, tgePrice: 0.004 },
   { name: 'Phantom', category: 'Application', amountRaised: 268_000_000, useDefillama: true }
 ];
 
