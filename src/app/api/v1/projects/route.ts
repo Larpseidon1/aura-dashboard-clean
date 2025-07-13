@@ -29,7 +29,7 @@ const BASE_PROJECTS: CryptoProject[] = [
   { name: 'Tether', category: 'Stablecoins', amountRaised: 69_420_000, useDefillama: true },
   { name: 'Circle', category: 'Stablecoins', amountRaised: 1_200_000_000, useDefillama: true },
   { name: 'Pump.fun', category: 'Application', amountRaised: 1_170_000, useDefillama: true, lastFundingRoundValuation: 12_000_000, tgePrice: 0.004 },
-  { name: 'Phantom', category: 'Application', amountRaised: 268_000_000, useDefillama: true }
+  { name: 'Phantom', category: 'Application', secondaryCategory: 'Hyperliquid', amountRaised: 268_000_000, useDefillama: false, hyperliquidBuilder: '0xb84168cf3be63c6b8dad05ff5d755e97432ff80b' }
 ];
 
 // API configuration
